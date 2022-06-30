@@ -1,0 +1,21 @@
+image: devfactory/workspace-full:latest
+# https://github.com/trilogy-group/workspace-images/blob/main/.gitpod.yml
+
+# List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
+tasks:
+  - init: |
+      aws s3 sync   s3://devgraph-devspaces-demos/dockerdb/edb1 edb1
+      git clone https://github.com/spherex-dev/docker-backup-volume.git
+      ./docker-backup-volume/create-volume-from-backup.sh -v mysql-data -p edb1
+      docker pull mysql:5.7.38
+      docker run -d --name=mysql-server -p 3306:3306 \
+                -e MYSQL_ROOT_PASSWORD=mypass       \
+                -e MYSQL_DATABASE=testdb            \
+                -v mysql-data:/var/lib/mysql        \
+                mysql:5.7.38
+
+  - command: echo 'start script'
+# List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
+ports:
+  - port: 3000
+    onOpen: open-preview
