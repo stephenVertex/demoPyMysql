@@ -13,4 +13,4 @@ export FNAME=edb1/mysql-data/`ls -t edb1/mysql-data/ | head -1`
 ls -lh $FNAME
 
 echo "Syncing to S3"
-aws s3 sync   edb1/ s3://devgraph-devspaces-demos/dockerdb/edb1
+aws s3 sync edb1/ s3://devgraph-devspaces-demos/dockerdb/edb1

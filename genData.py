@@ -3,6 +3,7 @@
 import mysql.connector
 import string
 import random
+from itertools import islice
 
 cnx = mysql.connector.connect(user='root',
                               password='mypass',
@@ -49,6 +50,9 @@ def getEmployeeIds(cursor):
     t = list(cursor)
     return([x[0] for x in t])
 
+def group_elements(lst, chunk_size):
+    lst = iter(lst)
+    return iter(lambda: tuple(islice(lst, chunk_size)), ())
 
 
 tables_pre = getTables(cursor)
@@ -69,19 +73,23 @@ def mkRandExtraData(N,
                     data_size = 10000                    
                     ):
     
-    for i in range(1, N+1):
-        emp_id = random.choice(empIds)
-        istr = ("INSERT INTO employee_extra " 
-                "(emp_no, extra_val) "
-                "VALUES (%s, %s)")
-        ival = (emp_id, makeRandomString(data_size))
-        cursor.execute(istr, ival)
-        if (i) %100 == 0:
-            print(f"Inserted {i}/{N}")
-            cnx.commit()
-        
-    print(f"DONE: Inserted {i}/{N}")
-    cnx.commit()
+    emp_id_samples = random.choices(empIds, k=N)
+    emp_id_groups  = group_elements(emp_id_samples, 200)
+    istr = "INSERT INTO employee_extra (emp_no, extra_val) VALUES (%s, %s)"
+
+    # Iteate over the chunks
+    ins_count = 0
+    for i_g, xs in enumerate(emp_id_groups):
+        emp_id_sublist = list(xs)
+        rand_data = [makeRandomString(data_size) for i in emp_id_sublist]
+        sub_data = list(zip(emp_id_sublist, rand_data))
+        cursor.executemany(istr, sub_data)
+        cnx.commit()
+        ins_count = ins_count + len(sub_data)
+        print(f"Group {i_g + 1}. Inserted {ins_count}/{N}")
+
+    
+    print(f"DONE: Inserted {ins_count}/{N}")
 
 
 mkRandExtraData(1337, empIds, cnx, cursor)
@@ -94,3 +102,4 @@ mkRandExtraData(543210, empIds, cnx, cursor)
 # mkRandExtraData(8675309, empIds, cnx, cursor)
 
 cnx.close()
+

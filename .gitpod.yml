@@ -12,7 +12,7 @@ tasks:
                 -e MYSQL_ROOT_PASSWORD=mypass       \
                 -e MYSQL_DATABASE=testdb            \
                 -v mysql-data:/var/lib/mysql        \
-                mysql:5.7.38
+                mysql:5.7.38 --max-allowed-packet=67108864
       pip3 install mysql-connector-python
   - command: echo 'start script'
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
