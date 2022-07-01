@@ -5,7 +5,8 @@ image: devfactory/workspace-full:latest
 tasks:
   - init: |
       mkdir -p edb1/mysql-data
-      KEY=`aws s3 ls  s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/ | awk '{print $4}' | sort | tail -n 1`
+      KEY=2022-07-01_061024_mysql-data.tar.gz
+      echo "Downloading from S3"
       aws s3 cp s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/
       find edb1
       git clone https://github.com/spherex-dev/docker-backup-volume.git

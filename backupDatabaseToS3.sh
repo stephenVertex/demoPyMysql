@@ -1,10 +1,10 @@
 #1/bin/bash
 
-echo "Stopping Docker mysql-server"
-docker stop mysql-server
+echo "Stopping Docker mysql-server cleanly..."
+docker exec mysql-server /usr/bin/mysqladmin -uroot -pmypass shutdown
 echo "...DONE"
 
-echo "Archiving up Docker volume"
+echo "Archiving up Docker volume..."
 ./docker-backup-volume/backup-volume.sh -v mysql-data -p edb1
 echo "...DONE"
 
