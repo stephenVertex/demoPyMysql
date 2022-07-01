@@ -53,7 +53,7 @@ def mkRandExtraData(N,
                     ):
     
     emp_id_samples = random.choices(empIds, k=N)
-    emp_id_groups  = group_elements(emp_id_samples, 200)
+    emp_id_groups  = group_elements(emp_id_samples, 1000)
     istr = "INSERT INTO employee_extra (emp_no, extra_val) VALUES (%s, %s)"
 
     # Iteate over the chunks
