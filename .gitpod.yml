@@ -4,7 +4,10 @@ image: devfactory/workspace-full:latest
 # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
   - init: |
-      aws s3 sync   s3://devgraph-devspaces-demos/dockerdb/edb1 edb1
+      mkdir -p edb1/mysql-data
+      KEY=`aws s3 ls  s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/ | awk '{print $4}' | sort | tail -n 1`
+      aws s3 cp s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/
+      find edb1
       git clone https://github.com/spherex-dev/docker-backup-volume.git
       ./docker-backup-volume/create-volume-from-backup.sh -v mysql-data -p edb1
       docker pull mysql:5.7.38
