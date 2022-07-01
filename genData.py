@@ -78,6 +78,7 @@ def mkRandExtraData(N,
         cursor.execute(istr, ival)
         if (i) %100 == 0:
             print(f"Inserted {i}/{N}")
+            cnx.commit()
         
     print(f"DONE: Inserted {i}/{N}")
     cnx.commit()
@@ -86,5 +87,10 @@ def mkRandExtraData(N,
 mkRandExtraData(1337, empIds, cnx, cursor)
 
 mkRandExtraData(31337, empIds, cnx, cursor)
+
+mkRandExtraData(543210, empIds, cnx, cursor)
+
+# Calling this function with this argument may not be a good time
+# mkRandExtraData(8675309, empIds, cnx, cursor)
 
 cnx.close()
