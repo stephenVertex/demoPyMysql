@@ -16,6 +16,8 @@ tasks:
                 -v mysql-data:/var/lib/mysql        \
                 mysql:5.7.38 --max-allowed-packet=67108864
       sleep 5
+      docker stop mysql-server
+      docker start mysql-server
       mysql -h 127.0.0.1 -u root --password=mypass -e "CREATE DATABASE employees"
       gunzip -c edb1/mysql-data/$KEY | mysql -h 127.0.0.1 -u root --password=mypass employees
       pip3 install mysql-connector-python
