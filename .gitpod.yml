@@ -5,18 +5,18 @@ image: devfactory/workspace-full:latest
 tasks:
   - init: |
       mkdir -p edb1/mysql-data
-      KEY=2022-07-01_211327_mysql-data.tar.gz
+      KEY=2022-07-03_204450__backup.sql.gz
       echo "Downloading from S3"
       aws s3 cp s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/
       find edb1
-      git clone https://github.com/spherex-dev/docker-backup-volume.git
-      ./docker-backup-volume/create-volume-from-backup.sh -v mysql-data -p edb1
       docker pull mysql:5.7.38
       docker run -d --name=mysql-server -p 3306:3306 \
                 -e MYSQL_ROOT_PASSWORD=mypass       \
                 -e MYSQL_DATABASE=testdb            \
                 -v mysql-data:/var/lib/mysql        \
                 mysql:5.7.38 --max-allowed-packet=67108864
+      docker exec mysql-server mysql -u root --password=mypass -e "CREATE DATABASE employees"
+      gunzip -c edb1/mysql-data/$KEY | docker exec -i CONTAINER /usr/bin/mysql -u root --password=root DATABASE
       pip3 install mysql-connector-python
   - command: echo 'start script'
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
