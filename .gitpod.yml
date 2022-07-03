@@ -16,7 +16,7 @@ tasks:
                 -v mysql-data:/var/lib/mysql        \
                 mysql:5.7.38 --max-allowed-packet=67108864
       docker exec mysql-server mysql -u root --password=mypass -e "CREATE DATABASE employees"
-      gunzip -c edb1/mysql-data/$KEY | docker exec -i CONTAINER /usr/bin/mysql -u root --password=root DATABASE
+      gunzip -c edb1/mysql-data/$KEY | docker exec -i mysql-server mysql -u root --password=mypass employees
       pip3 install mysql-connector-python
   - command: echo 'start script'
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
