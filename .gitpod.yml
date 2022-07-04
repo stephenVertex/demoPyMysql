@@ -4,20 +4,27 @@ image: devfactory/workspace-full:latest
 # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
   - init: |
-      mkdir -p edb1/mysql-data
-      KEY=2022-07-03_204450__backup.sql.gz
-      echo "Downloading from S3"
-      aws s3 cp s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/
-      find edb1
+
       docker pull mysql:5.7.38
       docker run -d --name=mysql-server -p 3306:3306 \
                 -e MYSQL_ROOT_PASSWORD=mypass       \
                 -e MYSQL_DATABASE=testdb            \
                 -v mysql-data:/var/lib/mysql        \
-                mysql:5.7.38 --max-allowed-packet=67108864
-      sleep 5
-      docker stop mysql-server
-      docker start mysql-server
+                mysql:5.7.38 --max-allowed-packet=67108864 \
+                --innodb_buffer_pool_size=4G \
+                --innodb_log_buffer_size=256M \
+                --innodb_log_file_size=1G \
+                --innodb_write_io_threads=16 \
+                --innodb_flush_log_at_trx_commit=0 \
+                --innodb-doublewrite=0
+      sleep 10
+      mkdir -p edb1/mysql-data
+      KEY=2022-07-03_204450__backup.sql.gz
+      echo "Downloading from S3"
+      aws s3 cp s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/
+      find edb1
+      #docker stop mysql-server
+      #docker start mysql-server
       sleep 5
       mysql -h 127.0.0.1 -u root --password=mypass -e "CREATE DATABASE employees"
       gunzip -c edb1/mysql-data/$KEY | mysql -h 127.0.0.1 -u root --password=mypass employees
