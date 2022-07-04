@@ -29,6 +29,8 @@ tasks:
       mysql -h 127.0.0.1 -u root --password=mypass -e "CREATE DATABASE employees"
       gunzip -c edb1/mysql-data/$KEY | mysql -h 127.0.0.1 -u root --password=mypass employees
       pip3 install mysql-connector-python
+
+      ## Now, we can stop 
   - command: echo 'start script'
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
