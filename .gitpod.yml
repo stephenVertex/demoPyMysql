@@ -10,25 +10,31 @@ tasks:
                 -e MYSQL_ROOT_PASSWORD=mypass       \
                 -e MYSQL_DATABASE=testdb            \
                 -v mysql-data:/var/lib/mysql        \
-                mysql:5.7.38 --max-allowed-packet=67108864 \
-                --innodb_buffer_pool_size=4G \
-                --innodb_log_buffer_size=256M \
-                --innodb_log_file_size=1G \
-                --innodb_write_io_threads=16 \
-                --innodb_flush_log_at_trx_commit=0 \
-                --innodb-doublewrite=0
-      sleep 10
-      mkdir -p edb1/mysql-data
-      KEY=2022-07-03_204450__backup.sql.gz
+                mysql:5.7.38 --max-allowed-packet=67108864 
+
+      ## Download database
+      KEY=2022-07-06_231402
+      mkdir -p edb1/mysql-data/$KEY
       echo "Downloading from S3"
       aws s3 cp s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/
+      aws s3 cp --dryrun --recursive s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/$KEY/
       find edb1
-      #docker stop mysql-server
-      #docker start mysql-server
-      sleep 5
+
+      ## Install MyDumper, built version
+      git clone https://github.com/mydumper/mydumper.git
+      git checkout d5346af02868853838b5e1fb0588b647dd751be8
+      cd mydumper && cmake . && make && sudo make install
+      cd ..
+
+
+      ### Load the database
       mysql -h 127.0.0.1 -u root --password=mypass -e "CREATE DATABASE employees"
-      gunzip -c edb1/mysql-data/$KEY | mysql -h 127.0.0.1 -u root --password=mypass employees
+      myloader -h 127.0.0.1 -u root  --password=mypass --database=employees --threads=8 --directory edb1/mysql-data/$KEY
+
+      ## Install Python Library
       pip3 install mysql-connector-python
+
+
 
       ## Now, we can stop 
   - command: echo 'start script'
