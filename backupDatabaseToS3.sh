@@ -1,5 +1,10 @@
-#1/bin/bash
-
+#!/bin/bash
+# File: backupDatabaseToS3.sh
+#
+# Usage: Run this script from the root directory:
+# $ cd ~
+# $ ./backupDatabaseToS3.sh
+#
 
 echo "Backing Up Database..."
 dname=`date +"%Y-%m-%d_%H%M%S"`
