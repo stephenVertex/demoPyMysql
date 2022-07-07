@@ -16,8 +16,8 @@ tasks:
       KEY=2022-07-06_231402
       mkdir -p edb1/mysql-data/$KEY
       echo "Downloading from S3"
-      aws s3 cp s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/
-      aws s3 cp --dryrun --recursive s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/$KEY/
+      #aws s3 cp s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/
+      aws s3 cp --recursive s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/$KEY/
       find edb1
 
       ## Install MyDumper, built version
