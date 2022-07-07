@@ -1,12 +1,7 @@
 #1/bin/bash
 
-#echo "Stopping Docker mysql-server cleanly..."
-#docker exec mysql-server /usr/bin/mysqladmin -uroot -pmypass shutdown
-#echo "...DONE"
 
-echo "Archiving Database..."
-#./docker-backup-volume/backup-volume.sh -v mysql-data -p edb1
-#docker exec mysql-server /usr/bin/mysqldump -u root --password=mypass employees | gzip -9 -c > `date +"%Y-%m-%d_%H%M%S"`__backup.sql.gz
+echo "Backing Up Database..."
 dname=`date +"%Y-%m-%d_%H%M%S"`
 mkdir -p edb1/mysql-data/$dname
 mydumper -h 127.0.0.1 -u root  --password=mypass --database=employees \
