@@ -13,7 +13,7 @@ tasks:
                 mysql:5.7.38 --max-allowed-packet=67108864 
 
       ## Download database
-      KEY=2022-07-06_231402
+      KEY=2022-07-07_061755
       mkdir -p edb1/mysql-data/$KEY
       echo "Downloading from S3"
       aws s3 cp --recursive s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/$KEY/
