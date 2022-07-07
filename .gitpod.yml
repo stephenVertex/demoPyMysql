@@ -23,8 +23,7 @@ tasks:
       ## Install MyDumper, built version
       git clone https://github.com/mydumper/mydumper.git
       git checkout d5346af02868853838b5e1fb0588b647dd751be8
-      cd mydumper && cmake . && make && sudo make install
-      cd ..
+      cd mydumper && cmake . && make && sudo make install && cd ..
 
 
       ### Load the database
