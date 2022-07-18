@@ -9,6 +9,9 @@ This repository shows how to:
 
 ## Snapshots
 
+- Base database volume snapshot: `2022-07-18_181659_mysql-data.tar.gz`
+- +20K entries volume snapshot: `2022-07-18_184803_mysql-data.tar.gz`
+- +200K entries volume snapshot: `2022-07-18_201543_mysql-data.tar.gz`
 - 10gb: `s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/2022-07-06_231402`
 
 # Docker 
@@ -16,11 +19,13 @@ This repository shows how to:
 ## Clean shutdown
 
 ```sh
+docker exec mysql-server /usr/bin/mysql -u root -pmypass -e 'flush tables;'
 docker exec mysql-server /usr/bin/mysqladmin -uroot -pmypass shutdown
 ```
 
 ## MyDumper and MyLoader
 
+Note, using the dump and load scripts are extremely slow.
 ```sh
 mydumper -h 127.0.0.1 -u root  --password=mypass --database=employees --threads=8  --outputdir edb1/mysql-data/
 ```
@@ -31,6 +36,7 @@ myloader -h 127.0.0.1 -u root  --password=mypass --database=employees --threads=
 
 ## MySQL Fast write mode
 
+Note, using volume mounts we do not need to do this.
 ```
 docker run -d --name=mysql-server -p 3306:3306 \
         -e MYSQL_ROOT_PASSWORD=mypass       \
