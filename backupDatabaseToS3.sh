@@ -6,12 +6,16 @@
 # $ ./backupDatabaseToS3.sh
 #
 
+echo "Flushing SQL tables"
+docker exec mysql-server /usr/bin/mysql -u root -pmypass -e 'flush tables;'
+
 echo "Stopping Docker mysql-server cleanly..."
 docker exec mysql-server /usr/bin/mysqladmin -uroot -pmypass shutdown
 echo "...DONE"
 
 echo "Archiving up Docker volume..."
-./docker-backup-volume/backup-volume.sh -v mysql-data -p edb1
+# ./docker-backup-volume/backup-volume.sh -v mysql-data -p edb1
+./dbv2/backup-volume.sh -v mysql-data -p edb1
 echo "...DONE"
 
 echo "Archive information:"
@@ -20,3 +24,7 @@ ls -lh $FNAME
 
 echo "Syncing to S3"
 aws s3 sync edb1/ s3://devgraph-devspaces-demos/dockerdb/edb1
+
+echo "DONE:"
+echo ""
+echo $FNAME

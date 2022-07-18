@@ -10,12 +10,12 @@ tasks:
       echo "Downloading from S3"
       aws s3 cp s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/
 
+      ## Downloading the volume backup tool
+      # git clone https://github.com/spherex-dev/docker-backup-volume.git
+      git clone https://github.com/stephenVertex/docker-backup-volume dvb2
 
       ## Unpack the docker volume
-      ./docker-backup-volume/create-volume-from-backup.sh -v mysql-data -p edb1
-
-      ## Downloading the volume backup tool
-      git clone https://github.com/spherex-dev/docker-backup-volume.git
+      ./dvb2/create-volume-from-backup.sh -v mysql-data -p edb1
 
       docker pull mysql:8.0.29
       docker run -d --name=mysql-server -p 3306:3306 \
