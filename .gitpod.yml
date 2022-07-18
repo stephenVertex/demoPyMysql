@@ -6,7 +6,7 @@ tasks:
   - init: |
       ## Get the data archive
       mkdir -p edb1/mysql-data
-      KEY=2022-07-18_181659_mysql-data.tar.gz
+      KEY=2022-07-18_201543_mysql-data.tar.gz
       echo "Downloading from S3"
       aws s3 cp s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/
 
