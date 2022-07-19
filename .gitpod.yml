@@ -5,7 +5,7 @@ image: devfactory/workspace-full:latest
 tasks:
   - init: |
       ## Get the data archive
-      KEY=2022-07-19_200058
+      KEY=2022-07-19_202135
       echo "Downloading from S3"
       aws s3 cp --recursive s3://devgraph-devspaces-demos/dockerdb/edb1/$KEY mysql-data
 

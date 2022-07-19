@@ -15,7 +15,7 @@ This repository shows how to:
 - 10gb: `s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/2022-07-06_231402`
 - Uncompressed: 
 - 1GB extra: `2022-07-19_200058`
-
+- 6GB extra: `2022-07-19_202135`
 # Docker 
 
 ## Clean shutdown
