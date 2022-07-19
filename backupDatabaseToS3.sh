@@ -15,16 +15,13 @@ echo "...DONE"
 
 echo "Archiving up Docker volume..."
 # ./docker-backup-volume/backup-volume.sh -v mysql-data -p edb1
-./dbv2/backup-volume.sh -v mysql-data -p edb1
+# 
+export FD=`date +"%Y-%m-%d_%H%M%S"`
+sudo chown -R gitpod:gitpod mysql-data/
+aws s3 cp --recursive  mysql-data s3://devgraph-devspaces-demos/dockerdb/edb1/$FD
 echo "...DONE"
 
-echo "Archive information:"
-export FNAME=edb1/mysql-data/`ls -t edb1/mysql-data/ | head -1`
-ls -lh $FNAME
-
-echo "Syncing to S3"
-aws s3 sync edb1/ s3://devgraph-devspaces-demos/dockerdb/edb1
 
 echo "DONE:"
-echo ""
-echo $FNAME
+echo $FD
+du -h -d 1 mysql-data

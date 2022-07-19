@@ -2,3 +2,6 @@ edb1/mysql-data/*.tar.gz
 docker-backup-volume/
 edb1/*
 mydumper/
+mysql-data/
+mysql-data-o2/
+mysql-data-old/

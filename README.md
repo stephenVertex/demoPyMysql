@@ -13,6 +13,8 @@ This repository shows how to:
 - +20K entries volume snapshot: `2022-07-18_184803_mysql-data.tar.gz`
 - +200K entries volume snapshot: `2022-07-18_201543_mysql-data.tar.gz`
 - 10gb: `s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/2022-07-06_231402`
+- Uncompressed: 
+- 1GB extra: `2022-07-19_200058`
 
 # Docker 
 

@@ -5,23 +5,15 @@ image: devfactory/workspace-full:latest
 tasks:
   - init: |
       ## Get the data archive
-      mkdir -p edb1/mysql-data
-      KEY=2022-07-18_201543_mysql-data.tar.gz
+      KEY=2022-07-19_200058
       echo "Downloading from S3"
-      aws s3 cp s3://devgraph-devspaces-demos/dockerdb/edb1/mysql-data/$KEY edb1/mysql-data/
-
-      ## Downloading the volume backup tool
-      # git clone https://github.com/spherex-dev/docker-backup-volume.git
-      git clone https://github.com/stephenVertex/docker-backup-volume dvb2
-
-      ## Unpack the docker volume
-      ./dvb2/create-volume-from-backup.sh -v mysql-data -p edb1
+      aws s3 cp --recursive s3://devgraph-devspaces-demos/dockerdb/edb1/$KEY mysql-data
 
       docker pull mysql:8.0.29
       docker run -d --name=mysql-server -p 3306:3306 \
                 -e MYSQL_ROOT_PASSWORD=mypass       \
                 -e MYSQL_DATABASE=testdb            \
-                -v mysql-data:/var/lib/mysql        \
+                -v /workspace/demoPyMysql/mysql-data:/var/lib/mysql   \
                 -v `pwd`/test_db:/test_db           \
                 mysql:8.0.29 --max-allowed-packet=67108864 
   
