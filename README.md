@@ -16,6 +16,7 @@ This repository shows how to:
 - Uncompressed: 
 - 1GB extra: `2022-07-19_200058`
 - 6GB extra: `2022-07-19_202135`
+- 10GB extra: `2022-07-19_203356`
 # Docker 
 
 ## Clean shutdown

@@ -6,7 +6,7 @@ tasks:
   - name: Pull S3 data
     init: |
       ## Get the data archive
-      KEY=2022-07-19_203356
+      KEY=2022-07-19_202135
       echo "Downloading from S3"
       aws s3 cp --recursive s3://devgraph-devspaces-demos/dockerdb/edb1/$KEY mysql-data
       gp sync-done s3-data
