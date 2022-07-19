@@ -3,26 +3,38 @@ image: devfactory/workspace-full:latest
 
 # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
-  - init: |
+  - name: Pull S3 data
+    init: |
       ## Get the data archive
       KEY=2022-07-19_203356
       echo "Downloading from S3"
       aws s3 cp --recursive s3://devgraph-devspaces-demos/dockerdb/edb1/$KEY mysql-data
+      gp sync-done s3-data
 
+  - name: Setup MySQL
+    init: |
       docker pull mysql:8.0.29
+  
+      ## Install Python MySQL Library
+      pip3 install mysql-connector-python
+
+      ## Get test data
+      git clone https://github.com/datacharmer/test_db
+
+      ## Signal the end of the setup
+      gp sync-done docker-mysql
+
+  - name: Run MySQL
+    init: |
+      gp sync-await docker-mysql
+      gp sync-await s3-data
       docker run -d --name=mysql-server -p 3306:3306 \
                 -e MYSQL_ROOT_PASSWORD=mypass       \
                 -e MYSQL_DATABASE=testdb            \
                 -v /workspace/demoPyMysql/mysql-data:/var/lib/mysql   \
                 -v `pwd`/test_db:/test_db           \
                 mysql:8.0.29 --max-allowed-packet=67108864 
-  
-
-      ## Install Python MySQL Library
-      pip3 install mysql-connector-python
-
     command: docker start mysql-server
-  - command: watch ./dbStats.sh
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
   - port: 3000
